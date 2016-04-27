@@ -1,8 +1,7 @@
 %% @author X. Van de Woestyne <xaviervdw@gmail.com>
 %% @copyright 2016 X. Van de Woestyne
 %% @version 0.1.0
-%% @title Coers, a small coersion library for Erlang
-%% @doc `coers` provide small function for value coersion.
+%% @doc coers provide small function for value coersion.
 
 -module(coers).
 -vsn(1).
@@ -64,8 +63,7 @@ map(F, Result) ->
 fmap(F, Result) ->
   new(succeed(Result), map(F, Result)).
 
-%% @doc Replace value if coersion failed
-%% @doc the suceeded flag is preserved
+%% @doc Replace value if coersion failed the suceeded flag is preserved
 -spec unless(result(), term()) -> result().
 unless(Result, Default) ->
   case succeed(Result) of
@@ -123,7 +121,6 @@ to_string(Term, Default) ->
   unless(to_string(Term), Default).
 
 %% @doc an ugly and magic coersion from string to term()
-%% @doc this function not should be used ...
 -spec of_string(string()) -> result().
 of_string(String) ->
   {ok, Regexp} = re:compile("^.+(\\,|\\;|\\.)$"),
@@ -147,8 +144,7 @@ of_string(String) ->
         new(false, none)
   end.
 
-%% @doc try coersion or define a default value
-%% @doc the suceeded flag is preserved
+%% @doc try coersion or define a default value the suceeded flag is preserved
 -spec of_string(string(), term()) -> result().
 of_string(Str, Default) ->
   unless(of_string(Str), Default).
@@ -213,8 +209,7 @@ to_float(Obj) when is_atom(Obj)      ->
   end;
 to_float(_) -> new(false, 0.0).
 
-%% @doc try coersion or define a default value
-%% @doc the suceeded flag is preserved
+%% @doc try coersion or define a default value the suceeded flag is preserved
 -spec to_float(term(), term()) -> result().
 to_float(Term, Default) ->
   unless(to_float(Term), Default).
@@ -231,8 +226,7 @@ to_atom(Obj) ->
   Pred = to_string(Obj),
   to_atom(value(Pred)).
 
-%% @doc try coersion or define a default value
-%% @doc the suceeded flag is preserved
+%% @doc try coersion or define a default value the suceeded flag is preserved
 -spec to_atom(term(), term()) -> result().
 to_atom(Term, Default) ->
   unless(to_atom(Term), Default).
@@ -256,8 +250,7 @@ to_bool(1)   -> new(true, true);
 to_bool(1.0) -> new(true, true);
 to_bool(_)   -> new(false, true).
 
-%% @doc try coersion or define a default value
-%% @doc the suceeded flag is preserved
+%% @doc try coersion or define a default value the suceeded flag is preserved
 -spec to_bool(term(), term()) -> result().
 to_bool(Term, Default) ->
   unless(to_bool(Term), Default).
