@@ -27,7 +27,9 @@
   to_int/1,
   to_int/2,
   to_float/1,
-  to_float/2
+  to_float/2,
+  to_atom/1,
+  to_atom/2
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -166,7 +168,7 @@ to_int(Obj) when is_float(Obj)   -> new(true, round(Obj));
 to_int(Obj) when is_bitstring(Obj) -> to_int(binary_to_list(Obj));
 to_int(Obj) when is_list(Obj)    ->
   try list_to_integer(Obj) of
-    Result -> new(true, Result)
+  Result    -> new(true, Result)
   catch _:_ ->
     case numeric_align(Obj) of
       float -> to_int(list_to_float(Obj));
@@ -175,7 +177,7 @@ to_int(Obj) when is_list(Obj)    ->
   end;
 to_int(Obj) when is_atom(Obj)     ->
   try Soft = atom_to_list(Obj), to_int(Soft) of
-    Result   -> Result
+  Result     -> Result
   catch  _:_ ->
     new(false, 0)
   end;
@@ -194,7 +196,7 @@ to_float(Obj) when is_integer(Obj)   -> new(true, float(Obj));
 to_float(Obj) when is_bitstring(Obj) -> to_float(binary_to_list(Obj));
 to_float(Obj) when is_list(Obj)      ->
   try list_to_float(Obj) of
-    Result   -> new(true, Result)
+  Result     -> new(true, Result)
   catch  _:_ ->
     case numeric_align(Obj) of
       integer -> to_float(list_to_integer(Obj));
@@ -203,7 +205,7 @@ to_float(Obj) when is_list(Obj)      ->
   end;
 to_float(Obj) when is_atom(Obj)      ->
   try Pred = atom_to_list(Obj), to_float(Pred) of
-    Result -> Result
+  Result -> Result
   catch _:_ ->
     new(false, 0.0)
   end;
@@ -214,3 +216,21 @@ to_float(_) -> new(false, 0.0).
 -spec to_float(term(), term()) -> result().
 to_float(Term, Default) ->
   unless(to_float(Term), Default).
+
+%% @doc try to coers a term to an atom
+-spec to_atom(term()) -> result().
+to_atom(Obj) when is_atom(Obj)  -> new(true, Obj);
+to_atom(Obj) when is_list(Obj)  ->
+  try list_to_atom(Obj) of
+  Result    -> new(true, Result)
+  catch _:_ -> new(false, false)
+  end;
+to_atom(Obj) when is_number(Obj) ->
+  Pred = to_string(Obj),
+  to_atom(Pred).
+
+%% @doc try coersion or define a default value
+%% @doc the suceeded flag is preserved
+-spec to_atom(term(), term()) -> result().
+to_atom(Term, Default) ->
+  unless(to_atom(Term), Default).
