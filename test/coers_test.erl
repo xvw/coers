@@ -55,3 +55,18 @@ maybe_list_test() ->
   ?assertNot(coers:maybe_string([0,1])),
   ?assertNot(coers:maybe_string(atom)),
   ?assertNot(coers:maybe_string(45.0)).
+
+
+to_string_test() ->
+  ToStr = fun(X) ->
+    coers:map(
+      fun(Y) -> Y end,
+      coers:to_string(X)
+    )
+  end,
+  ?assertEqual(ToStr("coers"), "coers"),
+  ?assertEqual(ToStr(coers),"coers"),
+  ?assertEqual(ToStr([]),""),
+  ?assertEqual(ToStr(45), "45"),
+  ?assertEqual(ToStr(<<"coers">>), "coers"),
+  ?assertEqual(ToStr(45.0), "45.0").

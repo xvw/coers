@@ -10,11 +10,14 @@
 
 -export([
   new/2,
+  map/2,
+  fmap/2,
   succeed/1,
   fail/1,
   value/1,
   is_ascii_char/1,
-  maybe_string/1
+  maybe_string/1,
+  to_string/1
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -31,6 +34,16 @@ new(Flag, Value) ->
     succeeded = Flag,
     value = Value
   }.
+
+%% @doc Apply a function to a result
+-spec map(fun(), result()) -> term().
+map(F, Result) ->
+  F(value(Result)).
+
+%% @doc Apply and wrap a function to a result
+-spec fmap(fun(), result()) -> result().
+fmap(F, Result) ->
+  new(succeed(Result), map(F, Result)).
 
 %% @doc determine if a coersion is a success
 -spec succeed(result()) -> boolean().
@@ -52,7 +65,7 @@ value(Coersion) ->
 is_ascii_char(X) when is_integer(X) ->
   (X >= 32) and (X < 127);
 is_ascii_char([H]) ->
-  is_ascii_char(H); 
+  is_ascii_char(H);
 is_ascii_char(_) ->
   false.
 
@@ -61,3 +74,16 @@ is_ascii_char(_) ->
 maybe_string(List) when is_list(List) ->
   lists:all(fun is_ascii_char/1, List);
 maybe_string(_) -> false.
+
+%% @doc try to coers term into string
+-spec to_string(term()) -> string().
+to_string(Term) when is_bitstring(Term) ->
+  List = binary_to_list(Term),
+  to_string(List);
+to_string(Term) ->
+  case maybe_string(Term) of
+    true -> new(true, Term);
+    false ->
+      List = io_lib:format("~p", [Term]),
+      new(true, lists:flatten(List))
+    end.
