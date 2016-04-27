@@ -106,3 +106,9 @@ unless2_test() ->
   R = coers:new(false, 45),
   Rp = coers:unless(R, 12),
   ?assertEqual(coers:value(Rp), 12).
+
+of_string_defensive_test() ->
+  R = coers:of_string("<<43", <<"43">>),
+  U = coers:of_string("foo", bar),
+  ?assertEqual(coers:value(R), <<"43">>),
+  ?assertEqual(coers:value(U), foo).
