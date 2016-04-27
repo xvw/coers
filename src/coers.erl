@@ -12,7 +12,9 @@
   new/2,
   succeed/1,
   fail/1,
-  value/1
+  value/1,
+  is_ascii_char/1,
+  maybe_string/1
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -44,3 +46,18 @@ fail(Coersion) ->
 -spec value(result()) -> term().
 value(Coersion) ->
   Coersion#result.value.
+
+%% @doc determine if an integer is a potential Ascii Char
+-spec is_ascii_char(integer()) -> boolean().
+is_ascii_char(X) when is_integer(X) ->
+  (X >= 32) and (X < 127);
+is_ascii_char([H]) ->
+  is_ascii_char(H); 
+is_ascii_char(_) ->
+  false.
+
+%% @doc check if a list is maybe a string
+-spec maybe_string(list()) -> boolean().
+maybe_string(List) when is_list(List) ->
+  lists:all(fun is_ascii_char/1, List);
+maybe_string(_) -> false.
