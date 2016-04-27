@@ -1,5 +1,5 @@
 {application, coers,
- [{description, "An OTP library"},
+ [{description, "A small coersion library for Erlang"},
   {vsn, "0.1.0"},
   {registered, []},
   {applications,
@@ -10,6 +10,6 @@
   {modules, []},
 
   {maintainers, []},
-  {licenses, []},
+  {licenses, [mit]},
   {links, []}
  ]}.
