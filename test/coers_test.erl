@@ -134,3 +134,10 @@ to_float_test() ->
   ?assertEqual(F("+0123.7654"), 123.7654),
   ?assertEqual(F(<<"23.78">>), 23.78),
   ?assertEqual(G("foo", 111.2), 111.2).
+
+to_atom_test() ->
+  F = fun(X) -> coers:value(coers:to_atom(X)) end,
+  ?assertEqual(F(foo), foo),
+  ?assertEqual(F("foo"), foo),
+  ?assertEqual(F(<<"foo">>), foo),
+  ?assertEqual(F(222.987), '222.987').

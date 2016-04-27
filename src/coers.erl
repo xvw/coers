@@ -225,9 +225,9 @@ to_atom(Obj) when is_list(Obj)  ->
   Result    -> new(true, Result)
   catch _:_ -> new(false, false)
   end;
-to_atom(Obj) when is_number(Obj) ->
+to_atom(Obj) ->
   Pred = to_string(Obj),
-  to_atom(Pred).
+  to_atom(value(Pred)).
 
 %% @doc try coersion or define a default value
 %% @doc the suceeded flag is preserved
