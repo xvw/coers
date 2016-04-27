@@ -141,3 +141,17 @@ to_atom_test() ->
   ?assertEqual(F("foo"), foo),
   ?assertEqual(F(<<"foo">>), foo),
   ?assertEqual(F(222.987), '222.987').
+
+to_bool_test() ->
+  F = fun(X) -> coers:value(coers:to_bool(X)) end,
+  ?assert(F("true")),
+  ?assert(F(true)),
+  ?assert(F(1)),
+  ?assert(F(1.0)),
+  ?assert(F("TrUe")),
+  ?assert(F(trUe)),
+  ?assertNot(F(false)),
+  ?assertNot(F("False")),
+  ?assertNot(F(<<"false">>)),
+  ?assertNot(F(0)),
+  ?assertNot(F(0.0)).

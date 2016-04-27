@@ -29,7 +29,9 @@
   to_float/1,
   to_float/2,
   to_atom/1,
-  to_atom/2
+  to_atom/2,
+  to_bool/1,
+  to_bool/2
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -234,3 +236,28 @@ to_atom(Obj) ->
 -spec to_atom(term(), term()) -> result().
 to_atom(Term, Default) ->
   unless(to_atom(Term), Default).
+
+%% @doc try to coers a term to a boolean
+-spec to_bool(term()) -> boolean().
+to_bool(Obj) when is_atom(Obj) ->
+  new((Obj == true) or (Obj == false), not (Obj == false));
+to_bool(Obj) when is_list(Obj) ->
+  case string:to_lower(Obj) of
+    "true"   -> new(true, true);
+    "false"  -> new(true, false);
+    _        -> new(false, true)
+  end;
+to_bool(X) when is_bitstring(X) ->
+  Pred = to_string(X),
+  to_bool(value(Pred));
+to_bool(0)   -> new(true, false);
+to_bool(0.0) -> new(true, false);
+to_bool(1)   -> new(true, true);
+to_bool(1.0) -> new(true, true);
+to_bool(_)   -> new(false, true).
+
+%% @doc try coersion or define a default value
+%% @doc the suceeded flag is preserved
+-spec to_bool(term(), term()) -> result().
+to_bool(Term, Default) ->
+  unless(to_bool(Term), Default).
