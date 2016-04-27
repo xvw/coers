@@ -57,6 +57,7 @@ maybe_list_test() ->
   ?assertNot(coers:maybe_string(45.0)).
 
 
+%% Test for to_string coersion
 to_string_test() ->
   ToStr = fun(X) ->
     coers:map(
@@ -70,3 +71,28 @@ to_string_test() ->
   ?assertEqual(ToStr(45), "45"),
   ?assertEqual(ToStr(<<"coers">>), "coers"),
   ?assertEqual(ToStr(45.0), "45.0").
+
+%% Test suits for magic coersion
+of_string_atomic_test() ->
+  R = coers:of_string("an_atom"),
+  ?assert(coers:succeed(R)),
+  ?assertEqual(coers:value(R), an_atom).
+
+of_string_list_test() ->
+  R = coers:of_string("[1,2,3,4]"),
+  ?assert(coers:succeed(R)),
+  ?assertEqual(coers:value(R), [1,2,3,4]).
+
+of_string_numeric_test() ->
+  R = coers:of_string("{45, 45.3}"),
+  ?assert(coers:succeed(R)),
+  ?assertEqual(coers:value(R), {45, 45.3}).
+
+of_string_bitstring_test() ->
+  R = coers:of_string("<<\"foo\">>"),
+  ?assert(coers:succeed(R)),
+  ?assertEqual(coers:value(R), <<"foo">>).
+
+of_string_error_test() ->
+  R = coers:of_string("{45"),
+  ?assert(coers:fail(R)).

@@ -17,7 +17,8 @@
   value/1,
   is_ascii_char/1,
   maybe_string/1,
-  to_string/1
+  to_string/1,
+  of_string/1
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -87,3 +88,28 @@ to_string(Term) ->
       List = io_lib:format("~p", [Term]),
       new(true, lists:flatten(List))
     end.
+
+%% @doc an ugly and magic coersion from string to term()
+%% @doc this function not should be used ...
+-spec of_string(string()) -> result().
+of_string(String) ->
+  {ok, Regexp} = re:compile("^.+(\\,|\\;|\\.)$"),
+    S =
+      case re:run(String, Regexp) of
+        {match, [_, {Offset, _}]} ->
+          Substring = string:substr(String, 1, Offset -1),
+          Substring ++ ".";
+        _ -> String ++ "."
+      end,
+    case erl_scan:string(S) of
+      {ok, Tokens, _} ->
+        case erl_parse:parse_exprs(Tokens) of
+          {ok, Exprs} ->
+            {value, Result, []} = erl_eval:exprs(Exprs, []),
+            new(true, Result);
+          {error, {_, _, _}} ->
+            new(false, none)
+        end;
+      {error, {_, _, _}, _} ->
+        new(false, none)
+  end.
