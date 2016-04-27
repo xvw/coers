@@ -162,8 +162,8 @@ numeric_align(String) ->
 %% @doc try to coers a term to an integer
 -spec to_int(term()) -> result().
 to_int(Obj) when is_integer(Obj) -> new(true, Obj);
-to_int(Obj) when is_float(Obj) -> new(true, round(Obj));
-to_int(Obj) when is_list(Obj) ->
+to_int(Obj) when is_float(Obj)   -> new(true, round(Obj));
+to_int(Obj) when is_list(Obj)    ->
   try list_to_integer(Obj) of
     Result -> new(true, Result)
   catch _:_ ->
@@ -172,9 +172,9 @@ to_int(Obj) when is_list(Obj) ->
       _     -> new(false, 0)
     end
   end;
-to_int(Obj) when is_atom(Obj) ->
+to_int(Obj) when is_atom(Obj)     ->
   try Soft = atom_to_list(Obj), to_int(Soft) of
-    Result  -> Result
+    Result   -> Result
   catch  _:_ ->
     new(false, 0)
   end;
@@ -185,3 +185,30 @@ to_int(_) -> new(false, 0).
 -spec to_int(term(), term()) -> result().
 to_int(Term, Default) ->
   unless(to_int(Term), Default).
+
+%% @doc try to coers a term to a float
+-spec to_float(term()) -> result().
+to_float(Obj) when is_float(Obj)   -> new(true, Obj);
+to_float(Obj) when is_integer(Obj) -> new(true, float(Obj));
+to_float(Obj) when is_list(Obj)    ->
+  try list_to_float(Obj) of
+    Result   -> new(true, Result)
+  catch  _:_ ->
+    case numeric_align(Obj) of
+      integer -> to_float(list_to_integer(Obj));
+      _       -> new(false, 0.0)
+    end
+  end;
+to_float(Obj) when is_atom(Obj)    ->
+  try Pred = atom_to_list(Obj), to_float(Pred) of
+    Result -> Result
+  catch _:_ ->
+    new(false, 0.0)
+  end;
+to_float(_) -> new(false, 0.0).
+
+%% @doc try coersion or define a default value
+%% @doc the suceeded flag is preserved
+-spec to_float(term(), term()) -> result().
+to_float(Term, Default) ->
+  unless(to_float(Term), Default).
