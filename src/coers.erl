@@ -151,10 +151,37 @@ of_string(Str, Default) ->
 
 %% @doc numeric alignement of a string (float of int)
 -spec numeric_align(string()) -> atom().
-numeric_align(Str) ->
+numeric_align(String) ->
   {ok, Regexp} = re:compile("^\\d+(\\.|\\,)?"),
     case re:run(String, Regexp) of
       {match, [_A]} -> integer;
       {match, [_A,_B]} -> float;
     _ -> any
   end.
+
+%% @doc try to coers a term to an integer
+-spec to_int(term()) -> result().
+to_int(Obj) when is_integer(Obj) -> new(true, Obj);
+to_int(Obj) when is_float(Obj) -> new(true, round(Obj));
+to_int(Obj) when is_list(Obj) ->
+  try list_to_integer(Obj) of
+    Result -> new(true, Result)
+  catch _:_ ->
+    case numeric_align(Obj) of
+      float -> to_int(list_to_float(Obj));
+      _     -> new(false, 0)
+    end
+  end;
+to_int(Obj) when is_atom(Obj) ->
+  try Soft = atom_to_list(Obj), to_int(Soft) of
+    Result  -> Result
+  catch  _:_ ->
+    new(false, 0)
+  end;
+to_int(_) -> new(false, 0).
+
+%% @doc try coersion or define a default value
+%% @doc the suceeded flag is preserved
+-spec to_int(term(), term()) -> result().
+to_int(Term, Default) ->
+  unless(to_int(Term), Default).
