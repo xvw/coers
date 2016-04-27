@@ -12,13 +12,16 @@
   new/2,
   map/2,
   fmap/2,
+  unless/2,
   succeed/1,
   fail/1,
   value/1,
   is_ascii_char/1,
   maybe_string/1,
   to_string/1,
-  of_string/1
+  to_string/2,
+  of_string/1,
+  of_string/2
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -45,6 +48,15 @@ map(F, Result) ->
 -spec fmap(fun(), result()) -> result().
 fmap(F, Result) ->
   new(succeed(Result), map(F, Result)).
+
+%% @doc Replace value if coersion failed
+%% @doc the suceeded flag is preserved
+-spec unless(result(), term()) -> result().
+unless(Result, Default) ->
+  case succeed(Result) of
+    true  -> Result;
+    false -> fmap(fun(_) -> Default end, Result)
+  end.
 
 %% @doc determine if a coersion is a success
 -spec succeed(result()) -> boolean().
@@ -89,6 +101,12 @@ to_string(Term) ->
       new(true, lists:flatten(List))
     end.
 
+%% @doc Replace value if coersion failed
+%% @doc the suceeded flag is preserved
+-spec to_string(term(), term()) -> result().
+to_string(Term, Default) ->
+  unless(to_string(Term), Default).
+
 %% @doc an ugly and magic coersion from string to term()
 %% @doc this function not should be used ...
 -spec of_string(string()) -> result().
@@ -113,3 +131,9 @@ of_string(String) ->
       {error, {_, _, _}, _} ->
         new(false, none)
   end.
+
+%% @doc try coersion or define a default value
+%% @doc the suceeded flag is preserved
+-spec of_string(string(), term()) -> result().
+of_string(Str, Default) ->
+  unless(of_string(Str), Default).
