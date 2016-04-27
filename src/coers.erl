@@ -5,8 +5,12 @@
 %% @doc `coers` provide small function for value coersion.
 
 -module(coers).
+-vsn(1).
+-author(["Xavier van De Woestyne"]).
+
 -export([
   new/2,
+  succeed/1,
   fail/1,
   value/1
 ]).
@@ -26,10 +30,15 @@ new(Flag, Value) ->
     value = Value
   }.
 
-%% @doc determine if a coersion is succeeded
+%% @doc determine if a coersion is a success
+-spec succeed(result()) -> boolean().
+succeed(Coersion) ->
+  Coersion#result.succeeded.
+
+%% @doc determine if a coersion is a failure
 -spec fail(result()) -> boolean().
 fail(Coersion) ->
-  not (Coersion#result.succeeded).
+  not succeed(Coersion).
 
 %% @doc extract the value of a wrapped result
 -spec value(result()) -> term().

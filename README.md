@@ -1,7 +1,7 @@
 coers
 =====
 
-An OTP library
+A small library for easy coersion in Erlang
 
 Build
 -----
