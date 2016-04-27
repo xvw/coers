@@ -1,3 +1,5 @@
+![](https://travis-ci.org/xvw/coers.svg?branch=master)
+
 coers
 =====
 
@@ -7,7 +9,10 @@ essentially for internal tools at derniercri.io
 
 Build & test
 -----
-
+    $ # Compile the library
     $ rebar3 compile
-
+    $ # run the tests using eUnit
     $ rebar3 eunit
+
+
+> This library must be documented
