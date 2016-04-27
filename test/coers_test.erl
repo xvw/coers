@@ -96,3 +96,13 @@ of_string_bitstring_test() ->
 of_string_error_test() ->
   R = coers:of_string("{45"),
   ?assert(coers:fail(R)).
+
+unless_test() ->
+  R = coers:new(true, 45),
+  Rp = coers:unless(R, 12),
+  ?assertEqual(coers:value(Rp), 45).
+
+unless2_test() ->
+  R = coers:new(false, 45),
+  Rp = coers:unless(R, 12),
+  ?assertEqual(coers:value(Rp), 12).
