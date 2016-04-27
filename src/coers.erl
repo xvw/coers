@@ -163,6 +163,7 @@ numeric_align(String) ->
 -spec to_int(term()) -> result().
 to_int(Obj) when is_integer(Obj) -> new(true, Obj);
 to_int(Obj) when is_float(Obj)   -> new(true, round(Obj));
+to_int(Obj) when is_bitstring(Obj) -> to_int(binary_to_list(Obj));
 to_int(Obj) when is_list(Obj)    ->
   try list_to_integer(Obj) of
     Result -> new(true, Result)
@@ -188,9 +189,10 @@ to_int(Term, Default) ->
 
 %% @doc try to coers a term to a float
 -spec to_float(term()) -> result().
-to_float(Obj) when is_float(Obj)   -> new(true, Obj);
-to_float(Obj) when is_integer(Obj) -> new(true, float(Obj));
-to_float(Obj) when is_list(Obj)    ->
+to_float(Obj) when is_float(Obj)     -> new(true, Obj);
+to_float(Obj) when is_integer(Obj)   -> new(true, float(Obj));
+to_float(Obj) when is_bitstring(Obj) -> to_float(binary_to_list(Obj));
+to_float(Obj) when is_list(Obj)      ->
   try list_to_float(Obj) of
     Result   -> new(true, Result)
   catch  _:_ ->
@@ -199,7 +201,7 @@ to_float(Obj) when is_list(Obj)    ->
       _       -> new(false, 0.0)
     end
   end;
-to_float(Obj) when is_atom(Obj)    ->
+to_float(Obj) when is_atom(Obj)      ->
   try Pred = atom_to_list(Obj), to_float(Pred) of
     Result -> Result
   catch _:_ ->
