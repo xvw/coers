@@ -8,11 +8,13 @@
 -vsn(1).
 -author(["Xavier van De Woestyne"]).
 
+%% API of Coers
 -export([
   new/2,
   map/2,
   fmap/2,
   unless/2,
+  traverse/1,
   succeed/1,
   fail/1,
   value/1,
@@ -21,7 +23,11 @@
   to_string/1,
   to_string/2,
   of_string/1,
-  of_string/2
+  of_string/2,
+  to_int/1,
+  to_int/2,
+  to_float/1,
+  to_float/2
 ]).
 
 %% Results of coersion are wrapped into a result record
@@ -38,6 +44,11 @@ new(Flag, Value) ->
     succeeded = Flag,
     value = Value
   }.
+
+%% @doc Unabstract result as a tuple
+-spec traverse(result()) -> {boolean(), term()}.
+traverse(Result) ->
+  {succeed(Result), value(Result)}.
 
 %% @doc Apply a function to a result
 -spec map(fun(), result()) -> term().
@@ -137,3 +148,13 @@ of_string(String) ->
 -spec of_string(string(), term()) -> result().
 of_string(Str, Default) ->
   unless(of_string(Str), Default).
+
+%% @doc numeric alignement of a string (float of int)
+-spec numeric_align(string()) -> atom().
+numeric_align(Str) ->
+  {ok, Regexp} = re:compile("^\\d+(\\.|\\,)?"),
+    case re:run(String, Regexp) of
+      {match, [_A]} -> integer;
+      {match, [_A,_B]} -> float;
+    _ -> any
+  end.
