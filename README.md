@@ -1,4 +1,4 @@
-![](https://travis-ci.org/xvw/coers.svg?branch=master)
+![](https://travis-ci.org/derniercri/coers.svg?branch=master)
 
 coers
 =====
