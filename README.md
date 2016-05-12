@@ -17,4 +17,4 @@ Build & test
 
 Documentation
 --------
-<http://xvw.github.io/coers/coers.html>
+<http://derniercri.github.io/coers/coers.html>
