@@ -1,7 +1,7 @@
 %% @author X. Van de Woestyne <xaviervdw@gmail.com>
 %% @copyright 2016 X. Van de Woestyne
 %% @version 0.1.0
-%% @doc coers provide small function for value coersion.
+%% @doc coers provide small function for value coercion.
 
 -module(coers).
 -vsn(1).
@@ -33,7 +33,7 @@
   to_bool/2
 ]).
 
-%% Results of coersion are wrapped into a result record
+%% Results of coercion are wrapped into a result record
 -record(result, {
   succeeded :: boolean(),
   value     :: term()
@@ -63,7 +63,7 @@ map(F, Result) ->
 fmap(F, Result) ->
   new(succeed(Result), map(F, Result)).
 
-%% @doc Replace value if coersion failed the suceeded flag is preserved
+%% @doc Replace value if coercion failed the suceeded flag is preserved
 -spec unless(result(), term()) -> result().
 unless(Result, Default) ->
   case succeed(Result) of
@@ -71,20 +71,20 @@ unless(Result, Default) ->
     false -> fmap(fun(_) -> Default end, Result)
   end.
 
-%% @doc determine if a coersion is a success
+%% @doc determine if a coercion is a success
 -spec succeed(result()) -> boolean().
-succeed(Coersion) ->
-  Coersion#result.succeeded.
+succeed(Coercion) ->
+  Coercion#result.succeeded.
 
-%% @doc determine if a coersion is a failure
+%% @doc determine if a coercion is a failure
 -spec fail(result()) -> boolean().
-fail(Coersion) ->
-  not succeed(Coersion).
+fail(Coercion) ->
+  not succeed(Coercion).
 
 %% @doc extract the value of a wrapped result
 -spec value(result()) -> term().
-value(Coersion) ->
-  Coersion#result.value.
+value(Coercion) ->
+  Coercion#result.value.
 
 %% @doc determine if an integer is a potential Ascii Char
 -spec is_ascii_char(integer()) -> boolean().
@@ -114,13 +114,13 @@ to_string(Term) ->
       new(true, lists:flatten(List))
     end.
 
-%% @doc Replace value if coersion failed
+%% @doc Replace value if coercion failed
 %% @doc the suceeded flag is preserved
 -spec to_string(term(), term()) -> result().
 to_string(Term, Default) ->
   unless(to_string(Term), Default).
 
-%% @doc an ugly and magic coersion from string to term()
+%% @doc an ugly and magic coercion from string to term()
 -spec of_string(string()) -> result().
 of_string(String) ->
   {ok, Regexp} = re:compile("^.+(\\,|\\;|\\.)$"),
@@ -144,7 +144,7 @@ of_string(String) ->
         new(false, none)
   end.
 
-%% @doc try coersion or define a default value the suceeded flag is preserved
+%% @doc try coercion or define a default value the suceeded flag is preserved
 -spec of_string(string(), term()) -> result().
 of_string(Str, Default) ->
   unless(of_string(Str), Default).
@@ -181,7 +181,7 @@ to_int(Obj) when is_atom(Obj)     ->
   end;
 to_int(_) -> new(false, 0).
 
-%% @doc try coersion or define a default value
+%% @doc try coercion or define a default value
 %% @doc the suceeded flag is preserved
 -spec to_int(term(), term()) -> result().
 to_int(Term, Default) ->
@@ -209,7 +209,7 @@ to_float(Obj) when is_atom(Obj)      ->
   end;
 to_float(_) -> new(false, 0.0).
 
-%% @doc try coersion or define a default value the suceeded flag is preserved
+%% @doc try coercion or define a default value the suceeded flag is preserved
 -spec to_float(term(), term()) -> result().
 to_float(Term, Default) ->
   unless(to_float(Term), Default).
@@ -226,7 +226,7 @@ to_atom(Obj) ->
   Pred = to_string(Obj),
   to_atom(value(Pred)).
 
-%% @doc try coersion or define a default value the suceeded flag is preserved
+%% @doc try coercion or define a default value the suceeded flag is preserved
 -spec to_atom(term(), term()) -> result().
 to_atom(Term, Default) ->
   unless(to_atom(Term), Default).
@@ -250,7 +250,7 @@ to_bool(1)   -> new(true, true);
 to_bool(1.0) -> new(true, true);
 to_bool(_)   -> new(false, true).
 
-%% @doc try coersion or define a default value the suceeded flag is preserved
+%% @doc try coercion or define a default value the suceeded flag is preserved
 -spec to_bool(term(), term()) -> result().
 to_bool(Term, Default) ->
   unless(to_bool(Term), Default).
