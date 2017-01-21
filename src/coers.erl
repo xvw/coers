@@ -103,7 +103,7 @@ maybe_string(List) when is_list(List) ->
   lists:all(fun is_ascii_char/1, List);
 maybe_string(_) -> false.
 
-%% @doc try to coers term into string
+%% @doc try to coerce term into string
 -spec to_string(any()) -> string().
 to_string(Term) when is_bitstring(Term) ->
   List = binary_to_list(Term),
@@ -161,7 +161,7 @@ numeric_align(String) ->
     _ -> any
   end.
 
-%% @doc try to coers a term to an integer
+%% @doc try to coerce a term to an integer
 -spec to_int(term()) -> result().
 to_int(Obj) when is_integer(Obj) -> new(true, Obj);
 to_int(Obj) when is_float(Obj)   -> new(true, round(Obj));
@@ -189,7 +189,7 @@ to_int(_) -> new(false, 0).
 to_int(Term, Default) ->
   unless(to_int(Term), Default).
 
-%% @doc try to coers a term to a float
+%% @doc try to coerce a term to a float
 -spec to_float(term()) -> result().
 to_float(Obj) when is_float(Obj)     -> new(true, Obj);
 to_float(Obj) when is_integer(Obj)   -> new(true, float(Obj));
@@ -216,7 +216,7 @@ to_float(_) -> new(false, 0.0).
 to_float(Term, Default) ->
   unless(to_float(Term), Default).
 
-%% @doc try to coers a term to an atom
+%% @doc try to coerce a term to an atom
 -spec to_atom(term()) -> result().
 to_atom(Obj) when is_atom(Obj)  -> new(true, Obj);
 to_atom(Obj) when is_list(Obj)  ->
@@ -233,7 +233,7 @@ to_atom(Obj) ->
 to_atom(Term, Default) ->
   unless(to_atom(Term), Default).
 
-%% @doc try to coers a term to a boolean
+%% @doc try to coerce a term to a boolean
 -spec to_bool(term()) -> boolean().
 to_bool(Obj) when is_atom(Obj) ->
   new((Obj == true) or (Obj == false), not (Obj == false));
