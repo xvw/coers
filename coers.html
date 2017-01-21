@@ -10,41 +10,43 @@
 <hr>
 
 <h1>Module coers</h1>
-<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>coers provide small function for value coersion.
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>coers provide small function for value coercion.
 <p>Copyright © 2016 X. Van de Woestyne</p>
 
 <p><b>Version:</b> 0.1.0</p>
 <p><b>Authors:</b> X. Van de Woestyne (<a href="mailto:xaviervdw@gmail.com"><tt>xaviervdw@gmail.com</tt></a>).</p>
 
-<h2><a name="description">Description</a></h2>coers provide small function for value coersion.
+<h2><a name="description">Description</a></h2>coers provide small function for value coercion.
 <h2><a name="types">Data Types</a></h2>
 
 <h3 class="typedecl"><a name="type-result">result()</a></h3>
-<p><tt>result() = #result{}</tt></p>
+<p><tt>result() = #result{succeeded = boolean(), value = term()}</tt></p>
 
 
 <h2><a name="index">Function Index</a></h2>
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#fail-1">fail/1</a></td><td>determine if a coersion is a failure.</td></tr>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#fail-1">fail/1</a></td><td>determine if a coercion is a failure.</td></tr>
 <tr><td valign="top"><a href="#fmap-2">fmap/2</a></td><td>Apply and wrap a function to a result.</td></tr>
 <tr><td valign="top"><a href="#is_ascii_char-1">is_ascii_char/1</a></td><td>determine if an integer is a potential Ascii Char.</td></tr>
 <tr><td valign="top"><a href="#map-2">map/2</a></td><td>Apply a function to a result.</td></tr>
 <tr><td valign="top"><a href="#maybe_string-1">maybe_string/1</a></td><td>check if a list is maybe a string.</td></tr>
 <tr><td valign="top"><a href="#new-2">new/2</a></td><td>Create a new result.</td></tr>
-<tr><td valign="top"><a href="#of_string-1">of_string/1</a></td><td>an ugly and magic coersion from string to term()...</td></tr>
-<tr><td valign="top"><a href="#of_string-2">of_string/2</a></td><td>try coersion or define a default value the suceeded flag is preserved.</td></tr>
-<tr><td valign="top"><a href="#succeed-1">succeed/1</a></td><td>determine if a coersion is a success.</td></tr>
+<tr><td valign="top"><a href="#of_string-1">of_string/1</a></td><td>an ugly and magic coercion from string to term().</td></tr>
+<tr><td valign="top"><a href="#of_string-2">of_string/2</a></td><td>try coercion or define a default value the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#succeed-1">succeed/1</a></td><td>determine if a coercion is a success.</td></tr>
 <tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td>try to coers a term to an atom.</td></tr>
-<tr><td valign="top"><a href="#to_atom-2">to_atom/2</a></td><td>try coersion or define a default value the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#to_atom-2">to_atom/2</a></td><td>try coercion or define a default value the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#to_bool-1">to_bool/1</a></td><td>try to coers a term to a boolean.</td></tr>
-<tr><td valign="top"><a href="#to_bool-2">to_bool/2</a></td><td>try coersion or define a default value the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#to_bool-2">to_bool/2</a></td><td>try coercion or define a default value the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td>try to coers a term to a float.</td></tr>
-<tr><td valign="top"><a href="#to_float-2">to_float/2</a></td><td>try coersion or define a default value the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#to_float-2">to_float/2</a></td><td>try coercion or define a default value the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#to_int-1">to_int/1</a></td><td>try to coers a term to an integer.</td></tr>
-<tr><td valign="top"><a href="#to_int-2">to_int/2</a></td><td>try coersion or define a default value the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#to_int-2">to_int/2</a></td><td>try coercion or define a default value
+       the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#to_string-1">to_string/1</a></td><td>try to coers term into string.</td></tr>
-<tr><td valign="top"><a href="#to_string-2">to_string/2</a></td><td>Replace value if coersion failed the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#to_string-2">to_string/2</a></td><td>Replace value if coercion failed
+       the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#traverse-1">traverse/1</a></td><td>Unabstract result as a tuple.</td></tr>
-<tr><td valign="top"><a href="#unless-2">unless/2</a></td><td>Replace value if coersion failed the suceeded flag is preserved.</td></tr>
+<tr><td valign="top"><a href="#unless-2">unless/2</a></td><td>Replace value if coercion failed the suceeded flag is preserved.</td></tr>
 <tr><td valign="top"><a href="#value-1">value/1</a></td><td>extract the value of a wrapped result.</td></tr>
 </table>
 
@@ -52,8 +54,8 @@
 
 <h3 class="function"><a name="fail-1">fail/1</a></h3>
 <div class="spec">
-<p><tt>fail(Coersion::<a href="#type-result">result()</a>) -&gt; boolean()</tt><br></p>
-</div><p>determine if a coersion is a failure</p>
+<p><tt>fail(Coercion::<a href="#type-result">result()</a>) -&gt; boolean()</tt><br></p>
+</div><p>determine if a coercion is a failure</p>
 
 <h3 class="function"><a name="fmap-2">fmap/2</a></h3>
 <div class="spec">
@@ -83,17 +85,17 @@
 <h3 class="function"><a name="of_string-1">of_string/1</a></h3>
 <div class="spec">
 <p><tt>of_string(String::string()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>an ugly and magic coersion from string to term()...</p>
+</div><p>an ugly and magic coercion from string to term()</p>
 
 <h3 class="function"><a name="of_string-2">of_string/2</a></h3>
 <div class="spec">
 <p><tt>of_string(Str::string(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>try coersion or define a default value the suceeded flag is preserved</p>
+</div><p>try coercion or define a default value the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="succeed-1">succeed/1</a></h3>
 <div class="spec">
-<p><tt>succeed(Coersion::<a href="#type-result">result()</a>) -&gt; boolean()</tt><br></p>
-</div><p>determine if a coersion is a success</p>
+<p><tt>succeed(Coercion::<a href="#type-result">result()</a>) -&gt; boolean()</tt><br></p>
+</div><p>determine if a coercion is a success</p>
 
 <h3 class="function"><a name="to_atom-1">to_atom/1</a></h3>
 <div class="spec">
@@ -103,7 +105,7 @@
 <h3 class="function"><a name="to_atom-2">to_atom/2</a></h3>
 <div class="spec">
 <p><tt>to_atom(Term::term(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>try coersion or define a default value the suceeded flag is preserved</p>
+</div><p>try coercion or define a default value the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="to_bool-1">to_bool/1</a></h3>
 <div class="spec">
@@ -113,7 +115,7 @@
 <h3 class="function"><a name="to_bool-2">to_bool/2</a></h3>
 <div class="spec">
 <p><tt>to_bool(Term::term(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>try coersion or define a default value the suceeded flag is preserved</p>
+</div><p>try coercion or define a default value the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="to_float-1">to_float/1</a></h3>
 <div class="spec">
@@ -123,7 +125,7 @@
 <h3 class="function"><a name="to_float-2">to_float/2</a></h3>
 <div class="spec">
 <p><tt>to_float(Term::term(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>try coersion or define a default value the suceeded flag is preserved</p>
+</div><p>try coercion or define a default value the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="to_int-1">to_int/1</a></h3>
 <div class="spec">
@@ -133,17 +135,19 @@
 <h3 class="function"><a name="to_int-2">to_int/2</a></h3>
 <div class="spec">
 <p><tt>to_int(Term::term(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>try coersion or define a default value the suceeded flag is preserved</p>
+</div><p>try coercion or define a default value
+       the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="to_string-1">to_string/1</a></h3>
 <div class="spec">
-<p><tt>to_string(Term::term()) -&gt; string()</tt><br></p>
+<p><tt>to_string(Term::any()) -&gt; string()</tt><br></p>
 </div><p>try to coers term into string</p>
 
 <h3 class="function"><a name="to_string-2">to_string/2</a></h3>
 <div class="spec">
 <p><tt>to_string(Term::term(), Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>Replace value if coersion failed the suceeded flag is preserved</p>
+</div><p>Replace value if coercion failed
+       the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="traverse-1">traverse/1</a></h3>
 <div class="spec">
@@ -153,15 +157,15 @@
 <h3 class="function"><a name="unless-2">unless/2</a></h3>
 <div class="spec">
 <p><tt>unless(Result::<a href="#type-result">result()</a>, Default::term()) -&gt; <a href="#type-result">result()</a></tt><br></p>
-</div><p>Replace value if coersion failed the suceeded flag is preserved</p>
+</div><p>Replace value if coercion failed the suceeded flag is preserved</p>
 
 <h3 class="function"><a name="value-1">value/1</a></h3>
 <div class="spec">
-<p><tt>value(Coersion::<a href="#type-result">result()</a>) -&gt; term()</tt><br></p>
+<p><tt>value(Coercion::<a href="#type-result">result()</a>) -&gt; term()</tt><br></p>
 </div><p>extract the value of a wrapped result</p>
 <hr>
 
 <div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
-<p><i>Generated by EDoc, Apr 27 2016, 07:37:34.</i></p>
+<p><i>Generated by EDoc, Jan 21 2017, 16:57:41.</i></p>
 </body>
 </html>
