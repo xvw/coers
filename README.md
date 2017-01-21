@@ -18,3 +18,9 @@ Build & test
 Documentation
 --------
 <http://derniercri.github.io/coers/coers.html>
+
+
+Examples
+--------
+
+You can check the `test` folder.
