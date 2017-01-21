@@ -33,6 +33,8 @@
   to_bool/2
 ]).
 
+-export_type([result/0]).
+
 %% Results of coercion are wrapped into a result record
 -record(result, {
   succeeded :: boolean(),
@@ -102,7 +104,7 @@ maybe_string(List) when is_list(List) ->
 maybe_string(_) -> false.
 
 %% @doc try to coers term into string
--spec to_string(term()) -> string().
+-spec to_string(any()) -> string().
 to_string(Term) when is_bitstring(Term) ->
   List = binary_to_list(Term),
   to_string(List);
@@ -115,7 +117,7 @@ to_string(Term) ->
     end.
 
 %% @doc Replace value if coercion failed
-%% @doc the suceeded flag is preserved
+%%      the suceeded flag is preserved
 -spec to_string(term(), term()) -> result().
 to_string(Term, Default) ->
   unless(to_string(Term), Default).
@@ -182,7 +184,7 @@ to_int(Obj) when is_atom(Obj)     ->
 to_int(_) -> new(false, 0).
 
 %% @doc try coercion or define a default value
-%% @doc the suceeded flag is preserved
+%%      the suceeded flag is preserved
 -spec to_int(term(), term()) -> result().
 to_int(Term, Default) ->
   unless(to_int(Term), Default).
