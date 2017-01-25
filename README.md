@@ -4,7 +4,7 @@ coers
 =====
 
 Coers is a very small library to provide small coercion
-on primitive type in Erlang. This library was built
+on primitive types in Erlang. This library was built
 essentially for internal tools at derniercri.io
 
 Build & test
@@ -40,10 +40,10 @@ Each coercion is wrapped into a special record:
 ```
 
 If a coercion fail, the `value` member is assigned with a default value and the `succeed`
-member is `false`. If the coersion succeed, the `value` member is the coersed data and the 
-`succeed` member is `true`.
+member is `false`. If the coersion succeed, the `value` member becomes the coerced data and the 
+`succeed` member becomes `true`.
 
-You can use this 3 combinators to have information about coercion status : 
+You can use these 3 combinators to have information about coercion status : 
 
 -  `-spec succeed(result()) -> boolean().`
 -  `-spec fail(result()) -> boolean().`
@@ -65,6 +65,6 @@ For example :
 Documentation
 --------
 
-This page expose the list of the features : <http://derniercri.github.io/coers/coers.html>
+This page exposes the feature list : <http://derniercri.github.io/coers/coers.html>
 
 
