@@ -65,6 +65,6 @@ For example :
 Documentation
 --------
 
-This page exposes the feature list : <http://derniercri.github.io/coers/coers.html>
+This page exposes the feature list : <http://xvw.github.io/coers/coers.html>
 
 
